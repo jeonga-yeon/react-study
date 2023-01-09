@@ -1,9 +1,5 @@
-import { createReducer } from "@reduxjs/toolkit";
-import {
-  getMoviesFailure,
-  getMoviesRequest,
-  getMoviesSuccess,
-} from "../actions/movieAction";
+import { createSlice } from "@reduxjs/toolkit";
+import getMoviesThunk from "../actions/movieAction";
 
 let initialState = {
   popularMovies: {},
@@ -13,17 +9,27 @@ let initialState = {
   genreList: [],
 };
 
-const movieReducer = createReducer(initialState, {
-  [getMoviesRequest]: (state) => ({ ...state, loading: true }),
-  [getMoviesSuccess]: (state, action) => ({
-    ...state,
-    popularMovies: action.payload.popularMovies,
-    topRatedMovies: action.payload.topRatedMovies,
-    upcomingMovies: action.payload.upcomingMovies,
-    loading: false,
-    genreList: action.payload.genreList,
-  }),
-  [getMoviesFailure]: (state) => ({ ...state, loading: false }),
+const movies = createSlice({
+  name: "movieReducer",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getMoviesThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMoviesThunk.fulfilled, (state, action) => {
+        state.popularMovies = action.payload.popularMovies;
+        state.topRatedMovies = action.payload.topRatedMovies;
+        state.upcomingMovies = action.payload.upcomingMovies;
+        state.loading = false;
+        state.genreList = action.payload.genreList;
+      })
+      .addCase(getMoviesThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      });
+  },
 });
 
-export default movieReducer;
+export default movies;

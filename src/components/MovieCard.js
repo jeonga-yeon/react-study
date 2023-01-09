@@ -3,7 +3,7 @@ import { Badge } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
 const MovieCard = ({ item }) => {
-  const { genreList } = useSelector((state) => state.movie);
+  const { genreList } = useSelector((state) => state.movies);
   return (
     <div
       className="card"

@@ -3,16 +3,16 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Banner from "../components/Banner";
 import MovieSlide from "../components/MovieSlide";
-import { movieAction } from "../redux/actions/movieAction";
+import getMoviesThunk from "../redux/actions/movieAction";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const Home = () => {
   const dispatch = useDispatch();
   const { popularMovies, topRatedMovies, upcomingMovies, loading } =
-    useSelector((state) => state.movie);
+    useSelector((state) => state.movies);
   console.log(popularMovies);
   useEffect(() => {
-    dispatch(movieAction.getMovies());
+    dispatch(getMoviesThunk());
   }, []);
   if (loading) {
     return <ClipLoader color="#ffff" loading={loading} size={150} />;
