@@ -1,3 +1,10 @@
+import { createReducer } from "@reduxjs/toolkit";
+import {
+  getMoviesFailure,
+  getMoviesRequest,
+  getMoviesSuccess,
+} from "../actions/movieAction";
+
 let initialState = {
   popularMovies: {},
   topRatedMovies: {},
@@ -6,25 +13,17 @@ let initialState = {
   genreList: [],
 };
 
-function movieReducer(state = initialState, action) {
-  let { type, payload } = action;
-  switch (type) {
-    case "GET_MOVIES_REQUEST":
-      return { ...state, loading: true };
-    case "GET_MOVIES_SUCCESS":
-      return {
-        ...state,
-        popularMovies: payload.popularMovies,
-        topRatedMovies: payload.topRatedMovies,
-        upcomingMovies: payload.upcomingMovies,
-        loading: false,
-        genreList: payload.genreList,
-      };
-    case "GET_MOVIES_FAILURE":
-      return { ...state, loading: false };
-    default:
-      return { ...state };
-  }
-}
+const movieReducer = createReducer(initialState, {
+  [getMoviesRequest]: (state) => ({ ...state, loading: true }),
+  [getMoviesSuccess]: (state, action) => ({
+    ...state,
+    popularMovies: action.payload.popularMovies,
+    topRatedMovies: action.payload.topRatedMovies,
+    upcomingMovies: action.payload.upcomingMovies,
+    loading: false,
+    genreList: action.payload.genreList,
+  }),
+  [getMoviesFailure]: (state) => ({ ...state, loading: false }),
+});
 
 export default movieReducer;
