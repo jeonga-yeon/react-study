@@ -3,8 +3,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Banner from "../components/Banner";
 import MovieSlide from "../components/MovieSlide";
-import getMoviesThunk from "../redux/actions/movieAction";
 import ClipLoader from "react-spinners/ClipLoader";
+import { getMoviesThunk } from "../redux/modules/movieSlice";
 
 const Home = () => {
   const dispatch = useDispatch();

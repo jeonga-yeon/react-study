@@ -1,14 +1,9 @@
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-unused-vars */
 import api from "../api";
-import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-export const getMoviesRequest = createAction("GET_MOVIES_REQUEST");
-export const getMoviesSuccess = createAction("GET_MOVIES_SUCCESS");
-export const getMoviesFailure = createAction("GET_MOVIES_FAILURE");
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
-const getMoviesThunk = createAsyncThunk(
+export const getMoviesThunk = createAsyncThunk(
   "movies/getMoviesThunk",
   async (thunkAPI) => {
     try {
@@ -47,4 +42,35 @@ const getMoviesThunk = createAsyncThunk(
   }
 );
 
-export default getMoviesThunk;
+let initialState = {
+  popularMovies: {},
+  topRatedMovies: {},
+  upcomingMovies: {},
+  loading: true,
+  genreList: [],
+};
+
+const movies = createSlice({
+  name: "movieReducer",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getMoviesThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMoviesThunk.fulfilled, (state, action) => {
+        state.popularMovies = action.payload.popularMovies;
+        state.topRatedMovies = action.payload.topRatedMovies;
+        state.upcomingMovies = action.payload.upcomingMovies;
+        state.loading = false;
+        state.genreList = action.payload.genreList;
+      })
+      .addCase(getMoviesThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      });
+  },
+});
+
+export default movies;
