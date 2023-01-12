@@ -3,9 +3,11 @@ import movies from "./modules/movieSlice";
 
 const rootReducer = combineReducers({
   movies: movies.reducer,
-  devTools: process.env.NODE_ENV !== "production",
 });
 
-let store = configureStore({ reducer: rootReducer });
+let store = configureStore({
+  reducer: rootReducer,
+  devTools: process.env.NODE_ENV !== "production",
+});
 
 export default store;
