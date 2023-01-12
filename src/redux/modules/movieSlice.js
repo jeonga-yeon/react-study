@@ -48,6 +48,7 @@ let initialState = {
   upcomingMovies: {},
   loading: true,
   genreList: [],
+  error: null,
 };
 
 const movies = createSlice({
